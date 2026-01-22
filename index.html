@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>Neko 3D Test</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- import map -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.150/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.150/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+
+<body>
+<h2>3Dネコ表示テスト</h2>
+
+<script type="module">
+  import * as THREE from 'three';
+  import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 10);
+  camera.position.z = 2;
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(innerWidth, innerHeight);
+  document.body.appendChild(renderer.domElement);
+
+  const light = new THREE.HemisphereLight(0xffffff, 0x444444, 1);
+  scene.add(light);
+
+  const loader = new GLTFLoader();
+  loader.load(
+    'neko.glb',
+    (gltf) => {
+      scene.add(gltf.scene);
+    },
+    undefined,
+    (error) => {
+      console.error('GLB読み込みエラー', error);
+    }
+  );
+
+  function animate() {
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+  }
+  animate();
+</script>
+
+</body>
+</html>
+1月21日 22:30
+
+
