@@ -5,17 +5,14 @@ const start = async () => {
 
   const { renderer, scene, camera } = mindarThree;
 
-  //const light = new THREE.HemisphereLight(0xffffff, 0x444444, 1);
-  //scene.add(light);
+  const light = new THREE.HemisphereLight(0xffffff, 0x444444, 1);
+  scene.add(light);
 
   const geometry = new THREE.BoxGeometry(1, 1, 1);
     const material = new THREE.MeshNormalMaterial();
     const box = new THREE.Mesh(geometry, material);
     scene.add(box);
-    const light = new THREE.AmbientLight(0xffffff, 1);
-    scene.add(light);
-    camera.position.set(0, 1, 3);
-    camera.lookAt(0, 0, 0);
+    
 
   const loader = new THREE.GLTFLoader();
   loader.load("neko.glb", (gltf) => {
