@@ -8,10 +8,7 @@ const start = async () => {
   const light = new THREE.HemisphereLight(0xffffff, 0x444444, 1);
   scene.add(light);
 
-  const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshNormalMaterial();
-    const box = new THREE.Mesh(geometry, material);
-    scene.add(box);
+  
     
 
   const loader = new THREE.GLTFLoader();
@@ -24,6 +21,11 @@ const start = async () => {
     scene.add(neko);
     
   });
+
+  const geometry = new THREE.BoxGeometry(1, 1, 1);
+  const material = new THREE.MeshNormalMaterial();
+  const box = new THREE.Mesh(geometry, material);
+  scene.add(box);
 
   await mindarThree.start();
   renderer.setAnimationLoop(() => {
