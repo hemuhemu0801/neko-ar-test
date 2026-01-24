@@ -1,36 +1,24 @@
-const start = async () => {
-  const mindarThree = new window.MINDAR.Three.MindARThree({
-    container: document.body
-  });
+import { GLTFLoader } from "https://unpkg.com/three@0.158.0/examples/jsm/loaders/GLTFLoader.js";
 
-  const { renderer, scene, camera } = mindarThree;
+const loader = new GLTFLoader();
 
-  const light = new THREE.HemisphereLight(0xffffff, 0x444444, 1);
-  scene.add(light);
-
-  
-  const geometry = new THREE.BoxGeometry(1, 1, 1);
-  const material = new THREE.MeshNormalMaterial();
-  const box = new THREE.Mesh(geometry, material);
-  scene.add(box);
-
-  const loader = new THREE.GLTFLoader();
-  loader.load("neko.glb", (gltf) => {
+loader.load(
+  "neko.glb",
+  (gltf) => {
     const neko = gltf.scene;
-    console.log(neko);
+
+    neko.traverse((child) => {
+      if (child.isMesh) {
+        child.material = new THREE.MeshNormalMaterial();
+      }
+    });
+
     neko.scale.set(1, 1, 1);
-    neko.position.set(0, -0.5, -1);
-    camera.position.set(0, 0.5, 2);
+    neko.position.set(2, 0, 0); // ←箱の横に置く
     scene.add(neko);
-    
-  });
-
-  
-
-  await mindarThree.start();
-  renderer.setAnimationLoop(() => {
-    renderer.render(scene, camera);
-  });
-};
-
-start();
+  },
+  undefined,
+  (error) => {
+    console.error("GLB load error:", error);
+  }
+);
