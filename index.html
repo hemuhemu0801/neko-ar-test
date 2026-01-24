@@ -69,18 +69,13 @@
 
       neko.traverse((child) => {
         if (child.isMesh) {
-          const name = child.material.name;
-
-          const color = areaColors[name] || 0xffffff;
-
           child.material = new THREE.MeshStandardMaterial({
-            color: color,
+            color: 0xffffff,
             roughness: 0.6,
             metalness: 0.0
           });
         }
       });
-
 
       neko.scale.set(1, 1, 1);
       neko.position.set(0, 0, 0);
