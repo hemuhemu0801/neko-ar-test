@@ -70,7 +70,8 @@
   // --------------------
   // ネコ読み込み
   // --------------------
-  let neko;
+ let neko;
+  let tailMesh = null;   // ← 追加
 
   const loader = new GLTFLoader();
   loader.load(
@@ -89,33 +90,41 @@
             roughness: 0.6,
             metalness: 0.0
           });
+
+          // 🐾 しっぽ検出
+          if (name === "Tail") {
+            tailMesh = child;
+          }
         }
       });
-
 
       neko.scale.set(1, 1, 1);
       neko.position.set(0, 0, 0);
       scene.add(neko);
-    },
-    undefined,
-    (error) => {
-      console.error("GLB load error:", error);
     }
   );
+
 
   // --------------------
   // アニメーション
   // --------------------
+  let tailTime = 0;
+
   function animate() {
     requestAnimationFrame(animate);
 
     if (neko) {
-      neko.rotation.y += 0.003;
+      neko.rotation.y += 0.002; // 全体はゆっくり回る
+    }
+
+    if (tailMesh) {
+      tailTime += 0.05;
+      tailMesh.rotation.y = Math.sin(tailTime) * 0.5;  // 左右フリフリ
     }
 
     renderer.render(scene, camera);
   }
-  animate();
+
 
   // --------------------
   // リサイズ対応
