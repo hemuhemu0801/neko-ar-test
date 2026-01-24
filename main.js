@@ -17,9 +17,11 @@ const start = async () => {
     camera.position.set(0, 0.5, 2);
     scene.add(neko);
     const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshNormalMaterial();
-const box = new THREE.Mesh(geometry, material);
-scene.add(box);
+    const material = new THREE.MeshNormalMaterial();
+    const box = new THREE.Mesh(geometry, material);
+    scene.add(box);
+    const light = new THREE.AmbientLight(0xffffff, 1);
+    scene.add(light);
   });
 
   await mindarThree.start();
