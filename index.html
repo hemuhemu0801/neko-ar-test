@@ -10,8 +10,7 @@
 <body>
 <script type="module">
   import * as THREE from "https://unpkg.com/three@0.158.0/build/three.module.js?module";
-import { GLTFLoader } from "https://unpkg.com/three@0.158.0/examples/jsm/loaders/GLTFLoader.js?module";
-
+  import { GLTFLoader } from "https://unpkg.com/three@0.158.0/examples/jsm/loaders/GLTFLoader.js?module";
 
   const scene = new THREE.Scene();
 
@@ -28,7 +27,7 @@ import { GLTFLoader } from "https://unpkg.com/three@0.158.0/examples/jsm/loaders
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
-  // 回る箱（保険）
+  // 箱
   const box = new THREE.Mesh(
     new THREE.BoxGeometry(1, 1, 1),
     new THREE.MeshNormalMaterial()
@@ -36,7 +35,7 @@ import { GLTFLoader } from "https://unpkg.com/three@0.158.0/examples/jsm/loaders
   box.position.x = -2;
   scene.add(box);
 
-  // ネコ読み込み
+  // ネコ
   const loader = new GLTFLoader();
   loader.load(
     "neko.glb",
@@ -68,5 +67,4 @@ import { GLTFLoader } from "https://unpkg.com/three@0.158.0/examples/jsm/loaders
   animate();
 </script>
 </body>
-</html>
 </html>
