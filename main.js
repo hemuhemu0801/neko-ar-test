@@ -22,6 +22,8 @@ const start = async () => {
     scene.add(box);
     const light = new THREE.AmbientLight(0xffffff, 1);
     scene.add(light);
+    camera.position.set(0, 1, 3);
+    camera.lookAt(0, 0, 0);
   });
 
   await mindarThree.start();
