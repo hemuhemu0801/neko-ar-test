@@ -2,45 +2,70 @@
 <html lang="ja">
 <head>
   <meta charset="utf-8" />
-  <title>three + glb test</title>
+  <title>ねこ表示テスト</title>
   <style>
-    body { margin: 0; overflow: hidden; }
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #f5f5f5;
+    }
   </style>
 </head>
 <body>
+
 <script type="module">
   import * as THREE from "https://unpkg.com/three@0.158.0/build/three.module.js?module";
   import { GLTFLoader } from "https://unpkg.com/three@0.158.0/examples/jsm/loaders/GLTFLoader.js?module";
 
+  // --------------------
+  // シーン
+  // --------------------
   const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0xf5f5f5);
 
+  // --------------------
+  // カメラ
+  // --------------------
   const camera = new THREE.PerspectiveCamera(
-    75,
+    60,
     window.innerWidth / window.innerHeight,
     0.1,
-    1000
+    100
   );
-  camera.position.set(0, 1, 3);
-  camera.lookAt(0, 0, 0);
+  camera.position.set(0, 1.2, 3);
+  camera.lookAt(0, 0.6, 0);
 
+  // --------------------
+  // レンダラー
+  // --------------------
   const renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(window.devicePixelRatio);
   document.body.appendChild(renderer.domElement);
 
-  // 箱
-  const box = new THREE.Mesh(
-    new THREE.BoxGeometry(1, 1, 1),
-    new THREE.MeshNormalMaterial()
-  );
-  box.position.x = -2;
-  scene.add(box);
+  // --------------------
+  // ライト（やさしいセット）
+  // --------------------
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+  scene.add(ambientLight);
 
-  // ネコ
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+  directionalLight.position.set(3, 5, 2);
+  scene.add(directionalLight);
+
+  const hemiLight = new THREE.HemisphereLight(0xffffff, 0xdddddd, 0.4);
+  scene.add(hemiLight);
+
+  // --------------------
+  // ネコ読み込み
+  // --------------------
+  let neko;
+
   const loader = new GLTFLoader();
   loader.load(
     "neko.glb",
     (gltf) => {
-      const neko = gltf.scene;
+      neko = gltf.scene;
 
       neko.traverse((child) => {
         if (child.isMesh) {
@@ -53,7 +78,7 @@
       });
 
       neko.scale.set(1, 1, 1);
-      neko.position.set(2, 0, 0);
+      neko.position.set(0, 0, 0);
       scene.add(neko);
     },
     undefined,
@@ -62,13 +87,29 @@
     }
   );
 
+  // --------------------
+  // アニメーション
+  // --------------------
   function animate() {
     requestAnimationFrame(animate);
-    box.rotation.x += 0.01;
-    box.rotation.y += 0.01;
+
+    if (neko) {
+      neko.rotation.y += 0.003;
+    }
+
     renderer.render(scene, camera);
   }
   animate();
+
+  // --------------------
+  // リサイズ対応
+  // --------------------
+  window.addEventListener("resize", () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
 </script>
+
 </body>
 </html>
