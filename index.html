@@ -135,7 +135,60 @@
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
+
+  const uiColors = {
+  Head: "#ffaaaa",
+  Body: "#ffffff",
+  Ear: "#aaaaff",
+  Tail: "#aaffaa"
+};
+
+document.querySelectorAll("#palette div").forEach(div => {
+  const area = div.dataset.area;
+  div.style.background = uiColors[area];
+});
+
+document.querySelectorAll("#palette div").forEach(div => {
+  div.addEventListener("click", () => {
+    const area = div.dataset.area;
+
+    neko.traverse(child => {
+      if (child.isMesh && child.material.name === area) {
+        child.material.color.set(uiColors[area]);
+      }
+    });
+  });
+});
+
+
+
 </script>
+<style>
+  #palette {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+}
+
+#palette div {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+</style>
+
+<div id="palette">
+  <div data-area="Head"></div>
+  <div data-area="Body"></div>
+  <div data-area="Ear"></div>
+  <div data-area="Tail"></div>
+</div>
+
 
 </body>
 </html>
