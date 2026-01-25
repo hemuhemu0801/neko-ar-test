@@ -135,33 +135,6 @@
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
-
-  const uiColors = {
-  Head: "#ffaaaa",
-  Body: "#ffffff",
-  Ear: "#aaaaff",
-  Tail: "#aaffaa"
-};
-
-document.querySelectorAll("#palette div").forEach(div => {
-  const area = div.dataset.area;
-  div.style.background = uiColors[area];
-});
-
-document.querySelectorAll("#palette div").forEach(div => {
-  div.addEventListener("click", () => {
-    const area = div.dataset.area;
-
-    neko.traverse(child => {
-      if (child.isMesh && child.material.name === area) {
-        child.material.color.set(uiColors[area]);
-      }
-    });
-  });
-});
-
-
-
 </script>
 <style>
   #palette {
@@ -179,15 +152,48 @@ document.querySelectorAll("#palette div").forEach(div => {
   border-radius: 8px;
   cursor: pointer;
 }
-
 </style>
 
+<!-- 🎨 カラーパレットを先に置く -->
 <div id="palette">
   <div data-area="Head"></div>
   <div data-area="Body"></div>
   <div data-area="Ear"></div>
   <div data-area="Tail"></div>
 </div>
+
+<script type="module">
+  import * as THREE from "https://unpkg.com/three@0.158.0/build/three.module.js?module";
+  import { GLTFLoader } from "https://unpkg.com/three@0.158.0/examples/jsm/loaders/GLTFLoader.js?module";
+
+  // （three.js のコードは今のままでOK）
+
+  const uiColors = {
+    Head: "#ffaaaa",
+    Body: "#ffffff",
+    Ear: "#aaaaff",
+    Tail: "#aaffaa"
+  };
+
+  document.querySelectorAll("#palette div").forEach(div => {
+    const area = div.dataset.area;
+    div.style.background = uiColors[area];
+  });
+
+  document.querySelectorAll("#palette div").forEach(div => {
+    div.addEventListener("click", () => {
+      const area = div.dataset.area;
+
+      if (!neko) return;
+
+      neko.traverse(child => {
+        if (child.isMesh && child.material.name === area) {
+          child.material.color.set(uiColors[area]);
+        }
+      });
+    });
+  });
+</script>
 
 
 </body>
