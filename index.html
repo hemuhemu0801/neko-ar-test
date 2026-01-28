@@ -172,23 +172,18 @@
   });
 
   document.querySelectorAll("#palette div").forEach(div => {
-    div.addEventListener("click", () => {
-      const area = div.dataset.area;
+  div.addEventListener("click", () => {
+    const area = div.dataset.area;
+    if (!neko) return;
 
-      if (!neko) return;
-
-      neko.traverse(child => {
-        if (child.isMesh && child.material.name === area) {
-          child.material.color.set(uiColors[area]);
-        }
-      });
-      neko.traverse(child => {
-        if (child.isMesh) {
-          console.log(child.name);
-        }
-      });
+    neko.traverse(child => {
+      if (child.isMesh && child.name === area) {
+        child.material.color.set(uiColors[area]);
+      }
     });
   });
+});
+
 </script>
 
 
