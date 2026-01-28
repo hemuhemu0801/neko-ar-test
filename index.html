@@ -182,6 +182,11 @@
           child.material.color.set(uiColors[area]);
         }
       });
+      neko.traverse(child => {
+        if (child.isMesh) {
+          console.log(child.name);
+        }
+      });
     });
   });
 </script>
